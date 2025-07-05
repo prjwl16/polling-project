@@ -8,7 +8,10 @@ const useSocket = () => {
   useEffect(() => {
     if (!socketRef.current) {
       // Connect to server
-      const serverUrl = process.env.NODE_ENV === 'production' ? window.location.origin : 'http://localhost:5001';
+      const serverUrl = process.env.REACT_APP_SERVER_URL ||
+                     (process.env.NODE_ENV === 'production'
+                       ? 'https://your-backend-url.railway.app'
+                       : 'http://localhost:5001');
 
       console.log('useSocket: Connecting to', serverUrl);
 

@@ -7,9 +7,13 @@ const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 const server = http.createServer(app);
+const allowedOrigins = process.env.CORS_ORIGINS
+  ? process.env.CORS_ORIGINS.split(',')
+  : ["http://localhost:3000"];
+
 const io = socketIo(server, {
   cors: {
-    origin: "*",
+    origin: process.env.NODE_ENV === 'production' ? allowedOrigins : "*",
     methods: ["GET", "POST"],
     allowedHeaders: ["*"],
     credentials: false
@@ -18,7 +22,7 @@ const io = socketIo(server, {
 
 // Middleware
 app.use(cors({
-  origin: "*",
+  origin: process.env.NODE_ENV === 'production' ? allowedOrigins : "*",
   credentials: false
 }));
 app.use(express.json());
